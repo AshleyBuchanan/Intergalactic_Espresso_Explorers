@@ -120,7 +120,7 @@ const startMonitoring = () => {
 
 const stopMonitoring = () => {
     clearInterval(monitoringTaskId);
-    setTimeout(() => { messageOf("...I'm sure everything'll be fine. :-D", true) }, 1000);
+    setTimeout(() => messageOf("...I'm sure everything'll be fine. :-D", true), 1000);
     messageOf('• stopped monitoring', false, 'h4');
     monitorOf('halted... [noHCF] ...system nominal');
 }
@@ -144,9 +144,9 @@ const scheduleMission = () => {
     button.innerText = 'Scheduled';
     button.disabled = true;
     startMonitoring();
-    addOneTimeTask(() => { messageOf(' → pre-launch systems check... complete', false, 'h4') }, 5000);
-    addOneTimeTask(() => { stopMonitoring() }, 10000);
-    addOneTimeTask(() => { startCountdown(10) }, 13000);
+    addOneTimeTask(() => messageOf(' → pre-launch systems check... complete', false, 'h4'), 5000);
+    addOneTimeTask(() => stopMonitoring(), 10000);
+    addOneTimeTask(() => startCountdown(10), 13000);
     setTimeout(() => runOneTimeTasks(), 500);
     messageOf('mission scheduled...');
 }
