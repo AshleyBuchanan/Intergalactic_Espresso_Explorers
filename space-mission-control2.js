@@ -64,6 +64,21 @@ class SpaceStation {
     }
 }
 
+const button = document.querySelector('button');
+button.addEventListener('click', (event) => {
+    event.preventDefault();
+    scheduleMission();
+});
+
+const mon = document.querySelector('#monitor');
+const monitorOf = (message) => {
+    const info = document.createElement('p');
+    info.classList.add('monitor-text')
+    info.innerText = message;
+    mon.append(info);
+    console.log(message);
+}
+
 const con = document.querySelector('#console');
 const messageOf = (message, emphasize, type = 'p') => {
     const info = document.createElement(type);
@@ -72,6 +87,13 @@ const messageOf = (message, emphasize, type = 'p') => {
     con.append(info);
     console.log(message);
 }
+
+const final = document.querySelector('#counter');
+const counterOf = (message) => {
+    final.innerText = message;
+    console.log(message);
+}
+
 const oneTimeTasks = [];
 let monitoringTaskId;
 
@@ -84,14 +106,15 @@ const runOneTimeTasks = () => {
     oneTimeTasks.forEach((task) => {
         setTimeout(task.function, task.delay);
     });
-    messageOf('running tasks');
+    messageOf('• running tasks', false, 'h4');
 }
 
 const startMonitoring = () => {
     monitoringTaskId = setInterval(() => {
-        console.log('monitoring...');
-        console.log(ourStation.LifeSupportSystems.Atmospherics)
-    }, 2000);
+        //monitorOf('monitoring...');
+        const { Atmospherics } = ourStation.LifeSupportSystems
+        monitorOf(`O2: ${Atmospherics.oxygen.toFixed(2)}% CO2: ${Atmospherics.co2.toFixed(2)}% N: ${Atmospherics.nitrogen.toFixed(2)}% Trace: ${Atmospherics.other.toFixed(2)}%`)
+    }, 1500);
     messageOf('• monitoring starting', false, 'h4');
 }
 
@@ -99,6 +122,7 @@ const stopMonitoring = () => {
     clearInterval(monitoringTaskId);
     setTimeout(() => { messageOf("...I'm sure everything'll be fine. :-D", true) }, 1000);
     messageOf('• stopped monitoring', false, 'h4');
+    monitorOf('halted... [noHCF] ...system nominal');
 }
 
 const startCountdown = (duration) => {
@@ -106,22 +130,24 @@ const startCountdown = (duration) => {
 
     const launchTimerId = setInterval(() => {
         timeLeft--;
-        if (timeLeft > 0) console.log(`T-minus ${timeLeft} seconds`);
+        if (timeLeft >= 0) counterOf(`T-minus: ${String(timeLeft).padStart(4, '0')}`);
 
-        if (timeLeft < 0) {
+        if (timeLeft <= 0) {
             clearInterval(launchTimerId);
-            messageOf('Lift Off!!!', true, 'h2');
+            messageOf('Lift Off!!!', true, 'h1');
         }
     }, 1000);
     messageOf(`countdown started: ${timeLeft} seconds`, false, 'h4');
 }
 
 const scheduleMission = () => {
+    button.innerText = 'Scheduled';
+    button.disabled = true;
     startMonitoring();
-    addOneTimeTask(() => { messageOf('pre-launch systems check... complete') }, 5000);
+    addOneTimeTask(() => { messageOf(' → pre-launch systems check... complete', false, 'h4') }, 5000);
     addOneTimeTask(() => { stopMonitoring() }, 10000);
-    addOneTimeTask(() => { startCountdown(10) }, 15000);
-    runOneTimeTasks();
+    addOneTimeTask(() => { startCountdown(10) }, 13000);
+    setTimeout(() => runOneTimeTasks(), 500);
     messageOf('mission scheduled...');
 }
 
