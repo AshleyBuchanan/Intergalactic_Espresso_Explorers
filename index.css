@@ -53,7 +53,7 @@ button:disabled {
     bottom: 145px;
     background-color: darkslategrey;
     color: yellowgreen;
-    text-shadow: 0 0 5px yellowgreen;
+    text-shadow: 0 0 10px yellowgreen;
     border-radius: 5px;
     padding: 5px;
 }

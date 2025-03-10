@@ -114,7 +114,7 @@ const startMonitoring = () => {
         //monitorOf('monitoring...');
         const { Atmospherics } = ourStation.LifeSupportSystems
         monitorOf(`O2: ${Atmospherics.oxygen.toFixed(2)}% CO2: ${Atmospherics.co2.toFixed(2)}% N: ${Atmospherics.nitrogen.toFixed(2)}% Trace: ${Atmospherics.other.toFixed(2)}%`)
-    }, 1500);
+    }, 1100);
     messageOf('• monitoring starting', false, 'h4');
 }
 
